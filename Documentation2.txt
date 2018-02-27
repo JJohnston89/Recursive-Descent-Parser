@@ -1,0 +1,50 @@
+Project 2
+COP 4620 Construction of Language Translators
+Student name: Joshua Johnston
+Instructor name: Dr. Roger Eggen
+Date due: 10/12/17
+Date submitted: 10/06/17
+
+
+This project has four classes. The Main.class which is the driver, the Scan.class which implements a lexical analyzer, 
+TokenRecord.class that holds the token type and its attribute, and RcursiveDescentParser.class which implements a top down parser.
+This program takes in one file when the program executes. The lexical analyzer outputs a file named tokens.txt which is the input to the parser. 
+The parser prints to the screen Accept or Reject.  
+To run this program on the Osprey?s server just type: p2 file_name.
+
+The Main.class takes in a file from the command line, and validates the file to see if it exists or not. 
+If no file was typed in the command line or the file does not exist, then the program will print an error message letting the user know if 
+they forgot to type in a file name or echo the file name back saying it does not exists then exit the program. If the file is validated then a Scan 
+object is created, passing the file as a parameter to the constructor. The Scan object then calls the getTokens() method then returns to main(). 
+A RecursiveDescentParser object is created without passing anything to the constructor. The object then calls parse() method then returns to main(), 
+and exit the program.
+
+The Scan.class implements a lexical analyzer. It outputs all the tokens into a file named tokens.txt. 
+It has only one public method which is getTokens(), and a private method which is isKeyword(). The getTokens() method is simply two nested loops 
+with a lot of nested if statements. The outer loop uses BufferedReader.class to read in a line at a time and echo the line to the screen, and to a file. 
+Echoing the line to the screen was for project 1 and for testing. It has been commented out. The outer loop terminates when it reaches EOF. The inner 
+loop reads each character of the line at a time checking to see if its a white space, comment, ID, NUM, or any of the special tokens. 
+If the char is a white space, then it continues to the next char. If the char is a /, and the look ahead is another / then break, and get the next line. 
+If the char is a /, and the look ahead is * then we are in a multi-line comment and keep count of the depth, and every time we see a *, and 
+the look ahead is / then we subtract the count by one. When the count is zero then we know, we are out of the multi-line comment. 
+If the char is a letter then the current token is ID, and keep appending until we see a char that is not a letter. Then the token value gets 
+passed to isKeyword() which returns true or false. Then the token type and its value gets stored into a TokenRecord object. 
+Then it prints out to the screen, and to a file. Echoing the line to the screen was for project 1 and for testing. It has been commented out. If the char is a 
+digit, then the token type is NUM. If we see a . and the look ahead is not a digit, then print error. If we see an E and the look ahead is not a digit or 
+a + or a - then print error. Otherwise stored the token type and the token value into a TokenRecord object. Then print it to the screen and file. 
+Echoing the line to the screen was for project 1 and for testing. It has been commented out. If the char is any of the special tokens, then it gets 
+stored into a TokenRecord object then printed to the screen and file. Echoing the line to the screen was for project 1 and for testing. It has been commented out. 
+If the char is not any of the tokens, then it prints error.The isKeyword() method implements a simple linear search that returns true or false. 
+
+The TokenRecord.class just stores the token type and the token value. 
+It's toString() method is used to print out to the screen, and to the file in the format "tokenType: tokenValue".
+
+The RcursiveDescentParser.class implements a top down parser. When an object is created, nothing is passed to the constructor. The constructor creates a File 
+object to open tokens.txt, creates a BufferedReader object to read the file, and then initialize a data field named token to the first token by calling readNextToken(). 
+The readNextToken() method reads a line from the buffer. If the token is ERROR then reject and exit the program else return the line. The parser follows the fixed grammar. 
+The first production is parse (instead of naming it program) then calls the next method, and the next method, and so on. When it reaches a terminal it calls match(). 
+The match() method takes the expected token as input, and compares it to the current token. If they do not match then print reject, and exit the program, else accept the token, and read 
+the next token by calling the readNextToken() method.
+When the token is EOF, and returns to parse() then print accept. Returns to main(), and exit the program.  
+
+
